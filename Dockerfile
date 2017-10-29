@@ -9,9 +9,8 @@ RUN apt-get update && apt-get install -y \
   wget \
   python3.5 \
   python3-pip \
-  python3-dev \
-  libmysqlclient-dev
-
+  python3-dev
+  
 # Install tensorflow and basics
 ENV TF_PYTHON_URL https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.1.0-cp35-cp35m-linux_x86_64.whl
 RUN pip3 install $TF_PYTHON_URL \
@@ -20,15 +19,15 @@ RUN pip3 install $TF_PYTHON_URL \
     scikit-learn \
     matplotlib \
     scikit-image \
-    pillow
+    pillow \
+    tqdm
 
 # Install Keras and its dependencies
 RUN pip3 install h5py \
     keras
 
 # Install miscs
-RUN pip3 install awscli \
-    akagi tqdm
+# RUN pip3 install awscli akagi libmysqlclient-dev
 
 #### Miscellaneous items for Kikuta
 #RUN apt-get install -y vim && \
