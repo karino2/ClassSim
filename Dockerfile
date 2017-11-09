@@ -34,8 +34,7 @@ RUN pip3 install h5py \
 #    git config --global core.editor 'vim -c "set fenc=utf-8"' && \
 #    pip3 install jupyterthemes
 
-# assume ubuntu user id is 1000.
-RUN useradd docker -u 1000 -s /bin/bash -m
+RUN useradd docker -u 1001 -s /bin/bash -m
 USER docker
 
 # Set alias for python3.5
