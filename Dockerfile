@@ -20,6 +20,7 @@ RUN pip3 install $TF_PYTHON_URL \
     matplotlib \
     scikit-image \
     pillow \
+    imageio \
     tqdm
 
 # Install Keras and its dependencies
