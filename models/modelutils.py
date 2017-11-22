@@ -59,10 +59,28 @@ def load_best_model(base_model_path):
 
 def dir2filedict(basedir):
     res = {}
-    for f in glob.iglob("{}/**/*.jpg".format(basedir), recursive=True):
+    for f in glob.iglob("{}/*/*".format(basedir), recursive=True):
         cat = os.path.basename(os.path.dirname(f))
         res.setdefault(cat, []).append(f)
     return res
+
+TRAIN_VALID_RATIO=0.9
+import random
+def split_train_valid(input_paths, ratio= TRAIN_VALID_RATIO):
+    paths = sorted(input_paths)
+    random.shuffle(paths)
+    sep = int(len(paths)*ratio)
+    return paths[0:sep], paths[sep:]
+
+def split_fdict(fdict):
+    trdict = {}
+    valdict = {}
+    cats = sorted(fdict.keys())
+    for cat in cats:
+        tr, val = split_train_valid(fdict[cat])
+        trdict[cat] = tr
+        valdict[cat] = val
+    return trdict, valdict
 
 from keras.applications.inception_v3 import InceptionV3
 from keras.models import Model
