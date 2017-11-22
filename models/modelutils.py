@@ -64,6 +64,14 @@ def dir2filedict(basedir):
         res.setdefault(cat, []).append(f)
     return res
 
+
+def split_files(target_key, files_dict):
+    truetrains = files_dict[target_key]
+    falsetrains = [file for key, files in files_dict.items() if key != target_key
+                    for file in files]
+    return truetrains, falsetrains
+
+
 TRAIN_VALID_RATIO=0.9
 import random
 def split_train_valid(input_paths, ratio= TRAIN_VALID_RATIO):
