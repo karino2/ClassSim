@@ -74,20 +74,23 @@ def split_files(target_key, files_dict):
 
 TRAIN_VALID_RATIO=0.9
 import random
-def split_train_valid(input_paths, ratio= TRAIN_VALID_RATIO):
-    paths = sorted(input_paths)
-    random.shuffle(paths)
-    sep = int(len(paths)*ratio)
-    return paths[0:sep], paths[sep:]
 
-def split_fdict(fdict):
+from sklearn.model_selection import train_test_split
+
+def split_fdict(fdict, test_size=0.2, random_state=1):
     trdict = {}
     valdict = {}
     cats = sorted(fdict.keys())
+    idx = 0
+    # random_state is for reproduce.
+    # split always the same way may have some problem.
+    # So I add idx to this seed for each split to make seed unique.
     for cat in cats:
-        tr, val = split_train_valid(fdict[cat])
+        paths = sorted(fdict[cat])
+        tr, val = train_test_split(paths, test_size=test_size, random_state=random_state+idx)
         trdict[cat] = tr
         valdict[cat] = val
+        idx+=1
     return trdict, valdict
 
 from keras.applications.inception_v3 import InceptionV3
