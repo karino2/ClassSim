@@ -10,30 +10,14 @@ RUN apt-get update && apt-get install -y \
   python3.5 \
   python3-pip \
   python3-dev
-  
+
 # Install tensorflow and basics
-ENV TF_PYTHON_URL https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.1.0-cp35-cp35m-linux_x86_64.whl
-RUN pip3 install $TF_PYTHON_URL \
-    jupyter \
-    pandas \
-    scikit-learn \
-    matplotlib \
-    scikit-image \
-    pillow \
-    imageio \
-    tqdm
+ADD requirements.txt .
+RUN pip3 install -r requirements.txt
 
 # Install Keras and its dependencies
 RUN pip3 install h5py \
     keras
-
-# Install miscs
-# RUN pip3 install awscli akagi libmysqlclient-dev
-
-#### Miscellaneous items for Kikuta
-#RUN apt-get install -y vim && \
-#    git config --global core.editor 'vim -c "set fenc=utf-8"' && \
-#    pip3 install jupyterthemes
 
 RUN useradd docker -u 1001 -s /bin/bash -m
 USER docker
