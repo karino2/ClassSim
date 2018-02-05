@@ -13,15 +13,15 @@ Collect datasets for experiments.
 ### Step 1. Scrape image url list
 If you use the url lists stored in `urls` folder, you can skip this step.
 This is the same lists we used in the experiment in our paper.
-If you want to add other classes or refresh url list, you need this step.
+If you want to add other classes or refresh the url list, you need this step.
 
 For scraping url lists, we use selenium with headless chrome.
-Use *Dockerfile.selenium* for building a docker image and run a docker cotainer with "--cap-add=SYS_ADMIN" option for headless chrome.
+Use *Dockerfile.selenium* for building a docker image and run a docker container with "--cap-add=SYS_ADMIN" option for headless chrome.
 
 The notebook for scraping is *datascraping.ipynb*.
 The result of the url lists will be stored in `urls` folder.
 
-Note that our result is already check-ed in to this repository.
+Note that our result is already checked in to this repository.
 
 
 ### Step 2. Retrieve images based on url lists
@@ -39,7 +39,7 @@ The images will be stored in `data` folder.
 Once data setup is done, you can compute ClassSim by the following steps.
 
 
-### Step 3. Train first level classifiers and multi-class classidier
+### Step 3. Train first level classifiers and multi-class classifier
 The notebook for training first level one vs. rest classifiers is *train.ipynb*.
 Trained classifiers will be stored in `trained_model` folder.
 
@@ -52,7 +52,7 @@ The notebook is *classifier_similarity.ipynb*.
 The result will be stored as "results/valid_sim_df.dat".
 
 #### Step 4.5 (optional) Compute PD distances
-If you want to compare our result to a previous study, you can reproduce the result by *GMM_similarity.ipynb*.
+If you want to compare our results to a previous study, you can reproduce the result by *GMM_similarity.ipynb*.
 The result will be stored as "results/GMMDistances.dat"
 
 
