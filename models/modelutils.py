@@ -64,6 +64,11 @@ def dir2filedict(basedir):
         res.setdefault(cat, []).append(f)
     return res
 
+### it should have been better for sorted always, but keep old method so that prevoius result can be reproduced.
+def dir2filedict_sorted(path):
+    dic = dir2filedict(path)
+    return {key: sorted(dic[key]) for key in dic.keys()}
+
 
 def split_files(target_key, files_dict):
     truetrains = files_dict[target_key]
