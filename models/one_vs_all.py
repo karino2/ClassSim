@@ -89,9 +89,9 @@ class OneVsAllModelTrainer:
         self.set_dataset(trval)
     def validation_generator(self, batch_size, target_size):
 
-        # false_sampled = random.sample(false_valids, len(true_valids))
-        # temporary use whole false validation data.
         vals = self.trvals.valids
+        # false_sampled = random.sample(vals.falses, len(vals.trues))
+        # temporary use whole false validation data.
         false_sampled = vals.falses
         return OneVsAllFilesIterator(vals.trues, false_sampled, self.valid_datagen, target_size=target_size, batch_size=batch_size)
     def save_result(self, history):
@@ -104,7 +104,7 @@ class OneVsAllModelTrainer:
         return [path for path in paths if path != best]
     def remove_checkpoint(self):
         list(map(os.remove, self.list_checkpoints_except_best()))
-    def train_model(self, eachepochs=5, batch_size=16, target_size=(SIZE, SIZE)):
+    def train_model(self, eachepochs=5, batch_size=16, target_size=(SIZE, SIZE), hard_coded_steps_per_epoch=None):
         with open("{0}.json".format(self.model_save_path), 'w') as f:
             json.dump(json.loads(self.model.to_json()), f) # model.to_json() is a STRING of json
 
@@ -113,15 +113,18 @@ class OneVsAllModelTrainer:
         validgen = self.validation_generator(batch_size, target_size)
         traingen = OneVsAllFilesIterator(trs.trues, random.sample(trs.falses, len(trs.trues)),  self.train_datagen, target_size=target_size, batch_size= batch_size)
 
+        if hard_coded_steps_per_epoch:
+            spe, val_spe = hard_coded_steps_per_epoch
+        else:
+            spe, val_spe = traingen.n/batch_size, validgen.n/batch_size
+
         history = self.model.fit_generator(
             generator=traingen
-            #, steps_per_epoch= 100
-            , steps_per_epoch= traingen.n/batch_size
+            , steps_per_epoch= spe
             , epochs=eachepochs
             , verbose=1
             , validation_data=validgen
-            , validation_steps=validgen.n/batch_size
-            # , validation_steps=10
+            , validation_steps=val_spe
             , callbacks=self.callbacks_list
         )
 
